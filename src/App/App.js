@@ -1,29 +1,15 @@
-import React from 'react';
-import './App.css';
-import WelcomeMessage from "./WelcomeMessage"
-import styled, {css} from "styled-components";
+/** @format */
 
-
-const MyButton = styled.div`
-  color: green;
-  ${props => props.primary && css`
-    color:palevioletred;
-  `}
-`
-
-const CoolButton = styled(MyButton)`
-  color:blue;
-  border-color:purple;
-`
+import React from "react";
+import "./App.css";
+import WelcomeMessage from "./WelcomeMessage";
+import styled, { css } from "styled-components";
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <WelcomeMessage/>
-        <MyButton>hi</MyButton>
-        <MyButton primary >hi</MyButton>
-        <CoolButton> hi</CoolButton>
+        <WelcomeMessage name="hi" />
       </header>
     </div>
   );
