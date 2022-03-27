@@ -4,14 +4,13 @@ import React from "react";
 import "./App.css";
 import WelcomeMessage from "./WelcomeMessage";
 import styled, { css } from "styled-components";
+import AppLayout from "./AppLayout";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <WelcomeMessage name="hi" />
-      </header>
-    </div>
+    <AppLayout>
+      <WelcomeMessage name="hi" />
+    </AppLayout>
   );
 }
 
