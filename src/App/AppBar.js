@@ -2,6 +2,8 @@
 
 import styled, { css } from "styled-components";
 import React from "react";
+import { AppContext } from "./AppProvider";
+import App from "./App";
 
 const Bar = styled.div`
   display: grid;
@@ -28,9 +30,13 @@ const ControlButtonElem = styled.div`
 
 const ControlButton = ({ name, active }) => {
   return (
-    <ControlButtonElem active={active}>
-      {capitalizeFirstLetter(name)}
-    </ControlButtonElem>
+    <AppContext.Consumer>
+      {({ page, setPage }) => (
+        <ControlButtonElem active={page === name} onClick={() => setPage(name)}>
+          {capitalizeFirstLetter(name)}
+        </ControlButtonElem>
+      )}
+    </AppContext.Consumer>
   );
 };
 
