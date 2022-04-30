@@ -3,7 +3,6 @@
 import styled, { css } from "styled-components";
 import React from "react";
 import { AppContext } from "./AppProvider";
-import App from "./App";
 
 const Bar = styled.div`
   display: grid;
@@ -24,11 +23,12 @@ const ControlButtonElem = styled.div`
   ${(props) =>
     props.active &&
     css`
-      text-shadow: 0px 0px 40px #03ff03;
+      text-shadow: 0px 0px 20px #03ff03, 0px 0px 40px #ffffff;
+      // text-shadow: 0px 0px 25px #03ff03, 0px 0px 5px #ffffff;
     `}
 `;
 
-const ControlButton = ({ name, active }) => {
+const ControlButton = ({ name }) => {
   return (
     <AppContext.Consumer>
       {({ page, setPage }) => (
