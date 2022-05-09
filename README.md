@@ -4,6 +4,7 @@ A Cryptocurrency Data visualization web app making use of styled components and 
 WIP
 
 
+---
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
