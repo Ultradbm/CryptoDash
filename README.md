@@ -1,3 +1,12 @@
+# CryptoDash
+A Cryptocurrency data visualization web app making use of the styled components library and the CryptoCompare API! Made following the <a href="https://www.udemy.com/course/react-data-visualization-build-a-cryptocurrency-dashboard/">CryptoDash Udemy Course by react.school</a> 
+
+WIP
+
+
+---
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
