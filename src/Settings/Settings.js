@@ -5,10 +5,11 @@ import ConfirmButton from "./ConfirmButton";
 import Page from "../Shared/Page";
 import CoinGrid from "./CoinGrid";
 
-export default function () {
+export default function Settings() {
   return (
     <Page name="settings">
       <WelcomeMessage />
+      <CoinGrid topSection />
       <ConfirmButton />
       <CoinGrid />
     </Page>
