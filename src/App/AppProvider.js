@@ -10,7 +10,7 @@ cc.setApiKey(
 
 export const AppContext = React.createContext();
 
-const MAX_FAVORITES = 10;
+const MAX_FAVORITES = 35;
 
 export class AppProvider extends React.Component {
   constructor(props) {
