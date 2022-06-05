@@ -3,8 +3,9 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { SelectableTile } from "../Shared/Tile";
-import { fontSize3, fontSizeBig } from "../Shared/Styles";
+import { fontSize3, fontSizeBig, greenBoxShadow } from "../Shared/Styles";
 import { CoinHeaderGridStyled } from "../Settings/CoinHeaderGrid";
+import { AppContext } from "../App/AppProvider";
 
 const JustifyRight = styled.div`
   justify-self: right;
@@ -46,6 +47,12 @@ const PriceTileStyled = styled(SelectableTile)`
         grid-template-columns: repeat(2, 1fr);
         opacity: 0.5;
       `}
+      ${(props) =>
+        props.currentSpotlight &&
+        css`
+          ${greenBoxShadow};
+          pointer-events: none;
+        `}
   }
 `;
 
@@ -71,9 +78,12 @@ const NoPriceData = styled.div`
   color: gray;
 `;
 
-function PriceTile({ sym, data }) {
+function PriceTile({ sym, data, currentSpotlight, setCurrentSpotlight }) {
   return (
-    <PriceTileStyled>
+    <PriceTileStyled
+      onClick={setCurrentSpotlight}
+      currentSpotlight={currentSpotlight}
+    >
       {data.PRICE ? (
         <div>
           <CoinHeaderGridStyled>
@@ -92,11 +102,20 @@ function PriceTile({ sym, data }) {
   );
 }
 
-function PriceTileCompact({ sym, data }) {
+function PriceTileCompact({
+  sym,
+  data,
+  currentSpotlight,
+  setCurrentSpotlight,
+}) {
   return (
     <div>
       {data.PRICE ? (
-        <PriceTileStyled compact>
+        <PriceTileStyled
+          onClick={setCurrentSpotlight}
+          compact
+          currentSpotlight={currentSpotlight}
+        >
           <JustifyLeft>{sym}</JustifyLeft>
           <ChangePercent data={data} />
           <div>${numberFormat(data.PRICE)}</div>
@@ -115,5 +134,16 @@ export default function ({ price, index }) {
   let sym = Object.keys(price)[0];
   let data = price[sym]["USD"];
   let TileClass = index < 5 ? PriceTile : PriceTileCompact;
-  return <TileClass sym={sym} data={data}></TileClass>;
+  return (
+    <AppContext.Consumer>
+      {({ currentSpotlight, setCurrentSpotlight }) => (
+        <TileClass
+          sym={sym}
+          data={data}
+          currentSpotlight={currentSpotlight === sym}
+          setCurrentSpotlight={() => setCurrentSpotlight(sym)}
+        ></TileClass>
+      )}
+    </AppContext.Consumer>
+  );
 }
