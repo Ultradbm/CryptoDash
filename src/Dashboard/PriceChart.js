@@ -11,9 +11,17 @@ ReactHighcharts.Highcharts.setOptions(HighchartsTheme);
 export default function () {
   return (
     <AppContext.Consumer>
-      {({}) => (
+      {({ historicalPrices, currentSpotlight }) => (
         <Tile>
-          <ReactHighcharts config={HighchartsConfig()} />
+          {historicalPrices ? (
+            <ReactHighcharts
+              config={HighchartsConfig("Price History", historicalPrices)}
+            />
+          ) : (
+            <ReactHighcharts
+              config={HighchartsConfig("Loading " + currentSpotlight, null)}
+            />
+          )}
         </Tile>
       )}
     </AppContext.Consumer>

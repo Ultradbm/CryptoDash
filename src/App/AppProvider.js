@@ -2,6 +2,7 @@
 
 import React from "react";
 import _ from "lodash";
+import moment from "moment";
 
 const cc = require("cryptocompare");
 cc.setApiKey(
@@ -11,6 +12,7 @@ cc.setApiKey(
 export const AppContext = React.createContext();
 
 const MAX_FAVORITES = 35;
+const TIME_UNITS = 12;
 
 export class AppProvider extends React.Component {
   constructor(props) {
@@ -32,7 +34,7 @@ export class AppProvider extends React.Component {
   componentDidMount = () => {
     this.fetchCoins();
     this.fetchPrices();
-    console.log("hi");
+    this.fetchHistorical();
   };
 
   addCoin = (key) => {
@@ -63,7 +65,6 @@ export class AppProvider extends React.Component {
     console.log(coinPrices);
     this.setState({ prices: coinPrices });
   };
-
   prices = async () => {
     let returnData = [];
     for (let i = 0; i < this.state.favorites.length; i++) {
@@ -77,6 +78,38 @@ export class AppProvider extends React.Component {
     return returnData;
   };
 
+  fetchHistorical = async () => {
+    if (this.state.firstVisit) return;
+    let results = await this.historical();
+    console.log("results", results);
+    let historicalPrices = [
+      {
+        name: this.state.currentSpotlight,
+        data: results.map((price, index) => [
+          moment()
+            .subtract({ months: TIME_UNITS - index })
+            .valueOf(),
+          price.USD,
+        ]),
+      },
+    ];
+    this.setState({ historicalPrices });
+  };
+
+  historical = () => {
+    let promises = [];
+    for (let units = TIME_UNITS; units > 0; units--) {
+      promises.push(
+        cc.priceHistorical(
+          this.state.currentSpotlight,
+          ["USD"],
+          moment().subtract({ months: units }).toDate()
+        )
+      );
+    }
+    return Promise.all(promises);
+  };
+
   confirmFavorites = () => {
     let currentSpotlight = this.state.favorites[0];
     this.setState(
@@ -84,9 +117,12 @@ export class AppProvider extends React.Component {
         firstVisit: false,
         page: "dashboard",
         currentSpotlight,
+        prices: null,
+        historicalPrices: null,
       },
       () => {
         this.fetchPrices();
+        this.fetchHistorical();
       }
     );
     localStorage.setItem(
@@ -100,9 +136,13 @@ export class AppProvider extends React.Component {
   };
 
   setCurrentSpotlight = (sym) => {
-    this.setState({
-      currentSpotlight: sym,
-    });
+    this.setState(
+      {
+        currentSpotlight: sym,
+        historicalPrices: null,
+      },
+      this.fetchHistorical
+    );
     localStorage.setItem(
       "cryptoDash",
       JSON.stringify({
