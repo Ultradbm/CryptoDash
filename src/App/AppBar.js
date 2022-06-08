@@ -26,13 +26,22 @@ const ControlButtonElem = styled.div`
       text-shadow: 0px 0px 20px #03ff03, 0px 0px 40px #ffffff;
       // text-shadow: 0px 0px 25px #03ff03, 0px 0px 5px #ffffff;
     `}
+  ${(props) =>
+    props.hidden &&
+    css`
+      display: none;
+    `}
 `;
 
 const ControlButton = ({ name }) => {
   return (
     <AppContext.Consumer>
-      {({ page, setPage }) => (
-        <ControlButtonElem active={page === name} onClick={() => setPage(name)}>
+      {({ firstVisit, page, setPage }) => (
+        <ControlButtonElem
+          active={page === name}
+          onClick={() => setPage(name)}
+          hidden={firstVisit && name === "dashboard"}
+        >
           {capitalizeFirstLetter(name)}
         </ControlButtonElem>
       )}

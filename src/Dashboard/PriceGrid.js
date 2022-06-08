@@ -21,7 +21,7 @@ export default function () {
             <PriceTile
               index={index}
               price={price}
-              key={Object.keys(price)[0]}
+              key={`PriceTile-${Object.keys(price)[0]}`}
             />
           ))}
         </PriceGrid>
